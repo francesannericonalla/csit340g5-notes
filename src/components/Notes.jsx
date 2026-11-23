@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import NoteCard from './NoteCard.jsx'
 
 function Notes() {
@@ -17,6 +17,10 @@ function Notes() {
   const [form, setForm] = useState({ title: '', body: '' })
   const [search, setSearch] = useState('')
 
+  useEffect(() => {
+    localStorage.setItem('notes', JSON.stringify(notes))
+  }, [notes])
+
   function handleChange(e) {
     const { name, value } = e.target
     setForm({ ...form, [name]: value })
@@ -28,7 +32,7 @@ function Notes() {
     const body = form.body.trim()
     if (title === '' || body === '') return
 
-    setNotes([...notes, { id: Date.now(), title, body }])
+    setNotes([...notes, { id: crypto.randomUUID(), title, body }])
     setForm({ title: '', body: '' })
   }
 
